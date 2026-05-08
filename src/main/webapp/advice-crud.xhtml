@@ -1,0 +1,61 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
+<f:metadata>
+    <f:viewAction action="#{adviceBean.init}"/>
+</f:metadata>
+<h:head>
+    <title>Hype Advice - Cadastro</title>
+    <meta name="author" content="The Author"/>
+</h:head>
+<h:body style="padding: 60px;">
+    <b:navBar brand="Hype Advice" brandHref="#" fixed="top" inverse="true">
+        <b:navbarLinks>
+            <b:navLink value="Cadastro" outcome="advice-crud"/>
+            <b:navLink value="Pesquisa" outcome="advice-list"/>
+        </b:navbarLinks>
+    </b:navBar>
+    <b:container>
+        <b:jumbotron>
+            <b:messages globalOnly="true" showSummary="true" redisplay="false" id="mensagensGlobais"/>
+            <h:form id="form-advice">
+                <b:form>
+                    <b:inputText id="name" placeholder="Nome..." value="#{adviceBean.advice.nome}" label="Nome"/>
+                    <b:message for="@previous"/>
+
+                    <b:inputTextarea label="Descricao" placeholder="Descricao..." value="#{adviceBean.advice.descricao}" required="true" requiredMessage="A Descricao e obrigatoria."/>
+                    <b:message for="@previous"/>
+
+                    <b:selectOneMenu id="tipo" value="#{adviceBean.advice.tipo}" label="Tipo de Conselho" required="true" requiredMessage="O Tipo de Conselho e obrigatorio.">
+                        <f:selectItem itemValue="#{null}" itemLabel="Selecionar" noSelectionOption="true"/>
+                        <f:selectItem itemValue="GRATUITO" itemLabel="Gratuito"/>
+                        <f:selectItem itemValue="PAGO" itemLabel="Pago"/>
+                    </b:selectOneMenu>
+                    <b:message for="tipo"/>
+
+                    <b:commandButton actionListener="#{adviceBean.salvar}" update="form-advice form-advice-list mensagensGlobais" value="Salvar"/>
+                    <b:commandButton actionListener="#{adviceBean.gerar}" look="info" update="form-advice" value="Gerar"/>
+                </b:form>
+            </h:form>
+        </b:jumbotron>
+        <b:jumbotron>
+            <h:form id="form-advice-list">
+                <h4 style="text-align:center">Conselhos Cadastrados</h4>
+                <b:dataTable value="#{adviceBean.advices}" var="adv">
+                    <b:dataTableColumn label="ID" style="width:10%" value="#{adv.id}"/>
+                    <b:dataTableColumn label="Nome" value="#{adv.nome}"/>
+                    <b:dataTableColumn label="Descricao" value="#{adv.descricao}"/>
+                    <b:dataTableColumn label="Tipo" value="#{adv.tipo}"/>
+                    <b:dataTableColumn label="Acoes" style="width:20%">
+                        <b:commandButton actionListener="#{adviceBean.editar(adv)}" look="warning" update="form-advice form-advice-list mensagensGlobais" value="Editar"/>
+                        <b:commandButton actionListener="#{adviceBean.excluir(adv)}" look="danger" update="form-advice form-advice-list mensagensGlobais" value="Excluir"/>
+                    </b:dataTableColumn>
+                </b:dataTable>
+            </h:form>
+        </b:jumbotron>
+    </b:container>
+</h:body>
+</html>

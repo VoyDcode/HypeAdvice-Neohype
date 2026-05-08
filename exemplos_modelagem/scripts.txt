@@ -1,0 +1,70 @@
+﻿-- ============================================================
+-- Script de criacao de tabelas - Hypeadvice
+-- Banco: PostgreSQL
+-- ============================================================
+
+-- Tabela: customer (Cliente)
+CREATE TABLE customer (
+    id            BIGSERIAL     PRIMARY KEY,
+    nome          VARCHAR(150)  NOT NULL,
+    email         VARCHAR(150)  NOT NULL UNIQUE,
+    telefone      VARCHAR(20),
+    created_at    TIMESTAMP     NOT NULL DEFAULT NOW(),
+    updated_at    TIMESTAMP     NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_customer_nome ON customer (nome);
+
+-- ============================================================
+
+-- Tabela: advice (Conselho)
+CREATE TABLE advice (
+    id            BIGSERIAL     PRIMARY KEY,
+    nome          VARCHAR(100),
+    descricao     TEXT          NOT NULL,
+    tipo          VARCHAR(20)   NOT NULL,
+    cliente_id    BIGINT        REFERENCES customer (id) ON DELETE SET NULL,
+    created_at    TIMESTAMP     NOT NULL DEFAULT NOW(),
+    updated_at    TIMESTAMP     NOT NULL DEFAULT NOW(),
+    CONSTRAINT chk_advice_tipo CHECK (tipo IN ('GRATUITO', 'PAGO'))
+);
+
+CREATE INDEX idx_advice_cliente ON advice (cliente_id);
+CREATE INDEX idx_advice_tipo    ON advice (tipo);
+
+-- ============================================================
+
+-- Tabela: sales (Venda)
+CREATE TABLE sales (
+    id            BIGSERIAL     PRIMARY KEY,
+    cliente_id    BIGINT        NOT NULL REFERENCES customer (id) ON DELETE RESTRICT,
+    conselho_id   BIGINT        NOT NULL REFERENCES advice (id)   ON DELETE RESTRICT,
+    valor         NUMERIC(10,2) NOT NULL DEFAULT 0.00,
+    data_compra   TIMESTAMP     NOT NULL DEFAULT NOW(),
+    created_at    TIMESTAMP     NOT NULL DEFAULT NOW(),
+    updated_at    TIMESTAMP     NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_sales_cliente     ON sales (cliente_id);
+CREATE INDEX idx_sales_conselho    ON sales (conselho_id);
+CREATE INDEX idx_sales_data_compra ON sales (data_compra);
+
+-- ============================================================
+
+-- Tabela: schedule (Agendamento)
+CREATE TABLE schedule (
+    id               BIGSERIAL    PRIMARY KEY,
+    uuid             UUID         NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    cliente_id       BIGINT       NOT NULL REFERENCES customer (id) ON DELETE CASCADE,
+    data_agendamento TIMESTAMP    NOT NULL,
+    status           VARCHAR(20)  NOT NULL DEFAULT 'PENDENTE',
+    observacao       TEXT,
+    usuario_criacao  VARCHAR(100) NOT NULL,
+    created_at       TIMESTAMP    NOT NULL DEFAULT NOW(),
+    updated_at       TIMESTAMP    NOT NULL DEFAULT NOW(),
+    CONSTRAINT chk_schedule_status CHECK (status IN ('PENDENTE', 'CONFIRMADO', 'CANCELADO', 'REALIZADO'))
+);
+
+CREATE INDEX idx_schedule_cliente ON schedule (cliente_id);
+CREATE INDEX idx_schedule_status  ON schedule (status);
+CREATE INDEX idx_schedule_data    ON schedule (data_agendamento);

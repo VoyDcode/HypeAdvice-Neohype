@@ -1,0 +1,56 @@
+﻿<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:b="http://bootsfaces.net/ui">
+<f:metadata>
+    <f:viewAction action="#{adviceListBean.init}"/>
+</f:metadata>
+<h:head>
+    <title>Hype Advice - Pesquisa</title>
+    <meta name="author" content="The Author"/>
+</h:head>
+<h:body style="padding: 60px;">
+    <b:navBar brand="Hype Advice" brandHref="#" fixed="top" inverse="true">
+        <b:navbarLinks>
+            <b:navLink value="Cadastro" outcome="advice-crud"/>
+            <b:navLink value="Pesquisa" outcome="advice-list"/>
+        </b:navbarLinks>
+    </b:navBar>
+    <b:container>
+        <b:jumbotron>
+            <b:messages globalOnly="true" showSummary="true" redisplay="false" id="mensagensGlobais"/>
+            <h:form id="form-advice">
+                <b:form>
+                    <b:inputTextarea label="Pesquisar por Descricao" placeholder="Descricao..." value="#{adviceListBean.advice.descricao}"/>
+                    <b:message for="@previous"/>
+
+                    <b:commandButton actionListener="#{adviceListBean.buscar}" look="info" update="form-advice-list mensagensGlobais" value="Buscar"/>
+                </b:form>
+            </h:form>
+
+            <br/>
+
+            <h:form id="form-advice-id">
+                <b:form>
+                    <b:inputText label="Pesquisar por ID" placeholder="Digite o ID..." value="#{adviceListBean.idBusca}" type="number" required="true" requiredMessage="O ID e obrigatorio para a busca."/>
+                    <b:message for="@previous"/>
+
+                    <b:commandButton actionListener="#{adviceListBean.buscarPorId}" look="primary" update="form-advice-list mensagensGlobais" value="Buscar por ID"/>
+                </b:form>
+            </h:form>
+        </b:jumbotron>
+        <b:jumbotron>
+            <h:form id="form-advice-list">
+                <h4 style="text-align:center">Conselhos Localizados</h4>
+                <b:dataTable value="#{adviceListBean.adviceListVO.slips}" var="adv">
+                    <b:dataTableColumn label="ID" style="width:10%" value="#{adv.id}"/>
+                    <b:dataTableColumn label="Conselho" value="#{adv.advice}"/>
+                    <b:dataTableColumn label="Data" value="#{adv.date}"/>
+                </b:dataTable>
+            </h:form>
+        </b:jumbotron>
+    </b:container>
+</h:body>
+</html>
