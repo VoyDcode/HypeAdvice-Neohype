@@ -34,6 +34,3 @@ build/
 # necessarios ao Java 17 sejam aplicados ao rodar/debugar pela IDE.
 .vscode/*
 !.vscode/launch.json
-
-### Claude Code ###
-.claude/
