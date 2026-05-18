@@ -9,15 +9,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-/**
- * Managed Bean da tela {@code advice-list.xhtml} (pesquisa de conselhos).
- *
- * <p>Suporta dois modos de busca contra a API externa Advice Slip:
- * <ul>
- *   <li>Por descricao (texto livre).</li>
- *   <li>Por ID.</li>
- * </ul>
- */
 @Named
 @ViewScoped
 public class AdviceListBean extends Bean {
@@ -34,7 +25,6 @@ public class AdviceListBean extends Bean {
         advice = new Advice();
     }
 
-    /** Executa a busca por descricao na API externa. */
     public void buscar() {
         try {
             this.adviceListVO = adviceService.buscar(advice);
@@ -44,10 +34,6 @@ public class AdviceListBean extends Bean {
         }
     }
 
-    /**
-     * Executa a busca por ID na API externa. Em caso de ID inexistente,
-     * exibe a mensagem da {@code RecursoNaoEncontradoException} ao usuario.
-     */
     public void buscarPorId() {
         try {
             this.adviceListVO = adviceService.buscarById(idBusca);

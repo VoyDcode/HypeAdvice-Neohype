@@ -15,18 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Controller REST que expoe as operacoes de gestao de conselhos.
- *
- * <p>Endpoints disponiveis:
- * <ul>
- *   <li>{@code GET /advice/v1/listar} - lista todos os conselhos cadastrados.</li>
- *   <li>{@code POST /advice/v1/salvar} - cadastra um novo conselho.</li>
- * </ul>
- *
- * <p>A documentacao OpenAPI eh gerada automaticamente pelas anotacoes
- * Swagger/Springdoc presentes nos metodos.
- */
 @Tag(name = "Advice", description = "Gestao dos conselhos")
 @CrossOrigin
 @RestController

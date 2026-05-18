@@ -11,19 +11,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.util.List;
 
-/**
- * Managed Bean da tela {@code advice-crud.xhtml} (cadastro de conselhos).
- *
- * <p>Mantido em escopo de view ({@link ViewScoped} - CDI) para preservar
- * o estado durante o ciclo de submit/render da pagina.
- *
- * <p>Responsabilidades:
- * <ul>
- *   <li>Listar conselhos cadastrados.</li>
- *   <li>Cadastrar novo conselho com validacao do campo tipo.</li>
- *   <li>Acionar a geracao de conselho aleatorio via API externa.</li>
- * </ul>
- */
 @Named
 @ViewScoped
 public class AdviceBean extends Bean {
@@ -34,16 +21,10 @@ public class AdviceBean extends Bean {
     private Advice advice = new Advice();
     private List<Advice> advices;
 
-    /** Carrega a lista de conselhos cadastrados na inicializacao da view. */
     public void initBean() {
         advices = adviceService.findAll();
     }
 
-    /**
-     * Persiste o conselho corrente. Valida que o campo tipo foi informado,
-     * evitando que a UI submeta um valor nulo (o select tem opcao "Selecionar"
-     * sem valor associado).
-     */
     public void salvar() {
         if (advice.getTipo() == null) {
             addFaceMessage(FacesMessage.SEVERITY_ERROR, "Erro", "O Tipo de Conselho e obrigatorio.");
@@ -55,7 +36,6 @@ public class AdviceBean extends Bean {
         addFaceMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Conselho cadastrado com sucesso.");
     }
 
-    /** Solicita um conselho aleatorio a API externa e preenche o formulario. */
     public void gerar() {
         try {
             advice = adviceService.gerar();

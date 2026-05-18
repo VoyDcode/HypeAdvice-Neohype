@@ -30,7 +30,8 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-# Mantemos .vscode/launch.json versionado para garantir que os --add-opens
-# necessarios ao Java 17 sejam aplicados ao rodar/debugar pela IDE.
 .vscode/*
 !.vscode/launch.json
+
+### Claude Code ###
+.claude/

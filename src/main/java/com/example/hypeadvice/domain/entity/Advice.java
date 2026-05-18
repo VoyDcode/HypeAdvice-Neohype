@@ -6,13 +6,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-/**
- * Entidade que representa um conselho persistido na base local.
- *
- * <p>Mapeada para a tabela {@code advice}. O campo {@code tipo} eh um enum
- * persistido como string (via {@link EnumType#STRING}) e nao pode ser nulo,
- * conforme requisito do exercicio 2.
- */
 @Data
 @javax.persistence.Entity
 @Table(name = "advice")

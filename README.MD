@@ -59,6 +59,8 @@ O Hibernate está configurado com `ddl-auto=update`, então a tabela `advice` é
 
 ## Executando
 
+O projeto é compilado para Java 8 (`source/target = 1.8`) mas roda sobre JDK 17. Para contornar restrições do sistema de módulos do Java 17 que impedem o CGLIB de subclassificar `FacesContext`, os `--add-opens` necessários já estão configurados em `<jvmArguments>` do `spring-boot-maven-plugin`. O comando abaixo aplica essas flags automaticamente:
+
 ```bash
 ./mvnw spring-boot:run
 ```
@@ -67,6 +69,12 @@ No Windows:
 
 ```powershell
 .\mvnw.cmd spring-boot:run
+```
+
+**IntelliJ IDEA:** ao rodar pela IDE (botão Run), adicione manualmente as VM Options na configuração de execução:
+
+```
+--add-opens java.base/java.lang=ALL-UNNAMED --add-opens java.base/java.io=ALL-UNNAMED --add-opens java.base/java.util=ALL-UNNAMED --add-opens java.base/java.util.concurrent=ALL-UNNAMED
 ```
 
 Após o startup, acesse:
@@ -92,10 +100,6 @@ Exemplo de payload para `POST /advice/v1/salvar`:
   "tipo": "GRATUITO"
 }
 ```
-
-## Documentação no código
-
-Todas as classes principais (services, controller, beans, entity, enum, exception) possuem JavaDoc descrevendo responsabilidades e decisões importantes. Pontos não-óbvios estão comentados inline (ex.: tratamento da resposta HTTP 200 com payload de erro da Advice Slip API).
 
 ## Resolução dos exercícios
 
@@ -153,5 +157,5 @@ Decisões de modelagem:
 
 ## Observações
 
-- O projeto roda em Java 17, mas mantém o `source/target = 1.8` definido no `pom.xml` original. Para evitar problemas de CGLIB com o sistema de módulos do Java 17, foram adicionados `--add-opens` em `<jvmArguments>` do `spring-boot-maven-plugin`.
+- O projeto roda em Java 17 mantendo `source/target = 1.8`. Para contornar restrições do sistema de módulos do Java 17 (CGLIB + JoinFaces), os `--add-opens` estão em `<jvmArguments>` do `spring-boot-maven-plugin` e em `.vscode/launch.json`. Ao rodar pela IDE, adicione essas flags manualmente nas VM Options conforme instruções da seção **Executando**.
 - A escolha por `javax.faces.view.ViewScoped` (CDI) foi proposital — o `javax.faces.bean.ViewScoped` está depreciado.
